@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {v4 as uuidv4} from 'uuid';
-import {useEffect, useState} from 'react';
-import {useParams, useLocation, useHistory} from 'react-router-dom';
-import {parse as rssParse} from 'rss-to-json';
+import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState } from 'react';
+import { useParams, useLocation, useHistory } from 'react-router-dom';
+import { parse as rssParse } from 'rss-to-json';
 
-import {httpErrorHandler} from '../../helpers/helpers';
+import { httpErrorHandler } from '../../helpers/helpers';
 import {
   PodcastDetail,
   PodcastDetailReq,
@@ -14,15 +14,15 @@ import {
 
 const Podcast = () => {
   const history = useHistory();
-  const {podcastId} = useParams<{podcastId: string}>();
-  const {state: locationState} = useLocation<PodcastDetailLocationState>();
+  const { podcastId } = useParams<{ podcastId: string }>();
+  const { state: locationState } = useLocation<PodcastDetailLocationState>();
   const [podcast, setPodcast] = useState<PodcastDetail | null>(null);
 
   useEffect(() => {
     const loadPodcastDetail = async () => {
       try {
-        const {data} = await axios.get(
-          ` https://itunes.apple.com/lookup?id=${podcastId}`
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_CORS_ANYWHERE_URL}/https://itunes.apple.com/lookup?id=${podcastId}`
         );
         const podcastDetailReq: PodcastDetailReq = data;
 

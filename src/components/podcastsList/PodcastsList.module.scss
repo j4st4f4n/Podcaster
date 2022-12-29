@@ -1,0 +1,28 @@
+.podcastsList {
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 10rem;
+  margin-top: 85px;
+}
+
+//Pantallas medianas (tablets de más de 768px)
+@media (min-width: 768px) {
+  .podcastsList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+//Pantallas grandes (desktops de más de 992px)
+@media (min-width: 992px) {
+  .podcastsList {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+//Pantallas muy grandes (desktops de más de 1200px)
+@media (min-width: 1200px) {
+  .podcastsList {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

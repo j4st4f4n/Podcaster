@@ -1,22 +1,29 @@
 import axios from 'axios';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-import {PodcastsData, PodcastsEntryReq, PodcastsEntry} from './Podcasts.types';
-import {getExpireTime, httpErrorHandler} from '../../helpers/helpers';
-import {useHistory} from 'react-router-dom';
+import { PodcastsData, PodcastEntryI } from './Podcasts.types';
+import {
+  getExpireTime,
+  httpErrorHandler,
+  simplifyRequestPodcastsEntry,
+} from '../../helpers/helpers';
+import SearchBox from '../../components/searchBox/SearchBox';
+import PodcastList from '../../components/podcastsList/PodcastsList';
 
 const Podcasts = () => {
-  const history = useHistory();
-  const [podcasts, setPodcasts] = useState<PodcastsEntry[]>([]);
+  const [search, setSearch] = useState<string>('');
+  const [podcasts, setPodcasts] = useState<PodcastEntryI[]>([]);
+  const [filteredPodcasts, setFilteredPodcasts] = useState<PodcastEntryI[]>([]);
 
   useEffect(() => {
     const loadPodcasts = async () => {
       try {
-        const {data} = await axios.get(`
+        const { data } = await axios.get(`
           ${process.env.REACT_APP_URL}/us/rss/toppodcasts/limit=100/genre=1310/json`);
 
+        localStorage.setItem('podcastsDataRaw', JSON.stringify(data));
         const oneDayTimeInMiliseconds = 24 * 60 * 60 * 1000;
-        const entries = simplifyRequestEntries(data.feed.entry);
+        const entries = simplifyRequestPodcastsEntry(data.feed.entry);
         const podcastsToSaveData: PodcastsData = {
           podcasts: entries,
           expiration: getExpireTime(oneDayTimeInMiliseconds),
@@ -26,6 +33,7 @@ const Podcasts = () => {
           JSON.stringify(podcastsToSaveData)
         );
         setPodcasts(entries);
+        setFilteredPodcasts(entries);
       } catch (error) {
         httpErrorHandler(error);
       }
@@ -38,44 +46,38 @@ const Podcasts = () => {
         preloadedPodcastsString
       );
       const hasExpired = new Date().getTime() > preloadedPodcasts.expiration;
-      if (!hasExpired) return setPodcasts(preloadedPodcasts.podcasts);
+      if (!hasExpired) {
+        setPodcasts(preloadedPodcasts.podcasts);
+        setFilteredPodcasts(preloadedPodcasts.podcasts);
+        return;
+      }
     }
     loadPodcasts();
   }, []);
 
-  const onPodcastClickHandler = (podcastEntry: PodcastsEntry) => {
-    history.push(`/podcast/${podcastEntry.id}`, {podcastEntry});
+  const onSearchChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
+    const searchText = event.currentTarget.value;
+    setSearch(searchText);
+    const filteredPodcasts = podcasts.filter(podcast => {
+      return (
+        podcast.title.toLowerCase().includes(searchText.toLowerCase()) ||
+        podcast.artist.toLowerCase().includes(searchText.toLowerCase())
+      );
+    });
+    setFilteredPodcasts(filteredPodcasts);
   };
 
-  const simplifyRequestEntries = (reqEntries: PodcastsEntryReq[]) =>
-    reqEntries.map((entry: PodcastsEntryReq) => {
-      const simplifiedEntry: PodcastsEntry = {
-        id: entry.id.attributes['im:id'],
-        name: entry['im:name'].label,
-        title: entry.title.label,
-        artist: entry['im:artist'].label,
-        image: entry['im:image'].map(image => ({
-          height: image.attributes.height,
-          label: image.label,
-        })),
-      };
-      return simplifiedEntry;
-    });
+  debugger;
 
   return (
     <div>
       <h1>PODCASTS</h1>
-      {podcasts.map((podcast: PodcastsEntry) => (
-        <div
-          key={podcast.id}
-          style={{marginBottom: '1rem'}}
-          onClick={() => onPodcastClickHandler(podcast)}
-        >
-          <div>{podcast.title}</div>
-          <div>Author: {podcast.artist}</div>
-          <img src={podcast.image[0].label} alt={podcast.name} />
-        </div>
-      ))}
+      <SearchBox
+        resultsNumber={filteredPodcasts.length}
+        value={search}
+        onSearchChangeHandler={onSearchChangeHandler}
+      />
+      <PodcastList podcasts={filteredPodcasts} />
     </div>
   );
 };

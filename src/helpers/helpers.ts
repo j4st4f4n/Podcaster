@@ -1,3 +1,8 @@
+import {
+  PodcastEntryI,
+  PodcastsEntryReq,
+} from '../screens/podcasts/Podcasts.types';
+
 export const httpErrorHandler = (error: any) => {
   if (error === null) {
     console.log('Unrecoverable error!! Error is null!');
@@ -24,3 +29,18 @@ export const getExpireTime = (expirationInMilisecons: number) => {
   const nowTime = new Date().getTime();
   return nowTime + expirationInMilisecons;
 };
+
+export const simplifyRequestPodcastsEntry = (reqEntries: PodcastsEntryReq[]) =>
+  reqEntries.map((entry: PodcastsEntryReq) => {
+    const simplifiedEntry: PodcastEntryI = {
+      id: entry.id.attributes['im:id'],
+      name: entry['im:name'].label,
+      title: entry.title.label,
+      artist: entry['im:artist'].label,
+      image: entry['im:image'].map(image => ({
+        height: image.attributes.height,
+        label: image.label,
+      })),
+    };
+    return simplifiedEntry;
+  });

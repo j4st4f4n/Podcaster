@@ -1,15 +1,15 @@
-import {PodcastsEntry} from '../podcasts/Podcasts.types';
+import { PodcastEntryI } from '../podcasts/Podcasts.types';
 
 export type PodcastDetailReq = {
   resultCount: number;
-  results: {feedUrl: string}[];
+  results: { feedUrl: string }[];
 };
 
 export type PodcastDetailLocationState = {
-  podcastEntry: PodcastsEntry;
+  podcastEntry: PodcastEntryI;
 };
 
-export interface PodcastDetail extends PodcastsEntry {
+export interface PodcastDetail extends PodcastEntryI {
   description: string;
   items: PodcastDetailItem[];
 }
@@ -22,7 +22,7 @@ export type PodcastDetailItem = {
   published: number;
   itunes_duration: number;
   link: string | undefined;
-  media: {thumbnail: Thumbnail[] | undefined};
+  media: { thumbnail: Thumbnail[] | undefined };
 };
 
 export type Thumbnail = {
