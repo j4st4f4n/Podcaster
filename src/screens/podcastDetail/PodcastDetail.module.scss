@@ -1,0 +1,9 @@
+.podcastDetail {
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  column-gap: 6rem;
+  .podcastDetailContainer {
+    padding: 1rem;
+  }
+}

@@ -1,12 +1,10 @@
-.podcastCard {
+.noList {
   list-style-type: none;
+}
+.podcastCard {
   text-align: center;
   margin: 1rem;
-  padding: 0 2rem;
-  border-radius: 0 0 5px 5px;
-  -webkit-box-shadow: 0px 3px 5px 1px rgba(207, 207, 207, 1);
-  -moz-box-shadow: 0px 3px 5px 1px rgba(207, 207, 207, 1);
-  box-shadow: 0px 3px 5px 1px rgba(207, 207, 207, 1);
+  padding: 0 2rem 0.5rem 2rem;
   img {
     position: relative;
     top: -85px;

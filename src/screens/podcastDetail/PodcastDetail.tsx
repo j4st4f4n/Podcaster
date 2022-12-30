@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { parse as rssParse } from 'rss-to-json';
 
+import PodcastSummary from '../../components/podcastSummary/PodcastSummary';
 import { httpErrorHandler } from '../../helpers/helpers';
 import {
   PodcastDetail,
@@ -11,6 +12,8 @@ import {
   PodcastDetailLocationState,
   PodcastDetailItem,
 } from './PodcastDetail.types';
+import styles from './PodcastDetail.module.scss';
+import Card from '../../components/card/Card';
 
 const Podcast = () => {
   const history = useHistory();
@@ -68,25 +71,31 @@ const Podcast = () => {
   if (!podcast) return <div>No podcast found</div>;
 
   return (
-    <div>
-      <img src={podcast.image[2].label} alt={podcast.name} />
-      <div>{podcast.title}</div>
-      <div>by {podcast.artist}</div>
-      <div>Description: {podcast.description}</div>
-      <div>Episodes: {podcast.items.length}</div>
-      {podcast.items.map((item: PodcastDetailItem) => {
-        // TODO: Hide not published items
+    <div className={styles.podcastDetail}>
+      <PodcastSummary {...podcast} imgSource={podcast.image[2].label} />
+      <section className={styles.podcastDetailContainer}>
+        <Card>EPISODES</Card>
+        <Card classes={styles.podcastDetailContainer}>
+          <img src={podcast.image[2].label} alt={podcast.name} />
+          <div>{podcast.title}</div>
+          <div>by {podcast.artist}</div>
+          <div>Description: {podcast.description}</div>
+          <div>Episodes: {podcast.items.length}</div>
+          {podcast.items.map((item: PodcastDetailItem) => {
+            // TODO: Hide not published items
 
-        return (
-          <div key={item.id}>
-            <div onClick={() => onPodcastDetailClickHandler(item)}>
-              {item.title}
-            </div>
-            <div>{item.published}</div>
-            <div>{item.itunes_duration}</div>
-          </div>
-        );
-      })}
+            return (
+              <div key={item.id}>
+                <div onClick={() => onPodcastDetailClickHandler(item)}>
+                  {item.title}
+                </div>
+                <div>{item.published}</div>
+                <div>{item.itunes_duration}</div>
+              </div>
+            );
+          })}
+        </Card>
+      </section>
     </div>
   );
 };

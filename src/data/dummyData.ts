@@ -1,4 +1,14 @@
+import { PodcastSummaryProps } from '../components/podcastSummary/PodcastSummary.types';
 import { PodcastEntryI } from '../screens/podcasts/Podcasts.types';
+
+export const DUMMY_SUMMARY: PodcastSummaryProps = {
+  imgSource:
+    'https://is1-ssl.mzstatic.com/image/thumb/Podcasts122/v4/84/84/ab/8484ab60-8c9e-30d5-92d3-c806c89cbbe7/mza_14154291241936766492.jpg/170x170bb.png',
+  name: 'Caresha Please',
+  title: 'Caresha Please',
+  artist: 'REVOLT',
+  description: `Host Yung Miami (of City Girls' fame) welcomes the biggest names in Hip Hop and entertainment for wild and unfiltered conversations about their lives, careers, relationships, and much more. Caresha Brownlee (Yung Miami) is a famous singer, musician, entrepreneur, model, social media star, and Internet sensation from Miami, FL. She is sure to get people talking and bring some surprises with fun, no holds barred interviews.`,
+};
 
 export const DUMMY_ENTRY: PodcastEntryI = {
   id: '1628914491',
