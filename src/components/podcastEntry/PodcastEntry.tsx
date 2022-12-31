@@ -1,14 +1,19 @@
+import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+
+import { PodcastContext } from '../../context/podcast-context';
+import Card from '../card/Card';
 
 import { PodcastEntryProps } from './PodcastEntry.types';
 import styles from './PodcastEntry.module.scss';
-import Card from '../card/Card';
 
 const PodcastEntry = ({ podcast }: PodcastEntryProps) => {
   const history = useHistory();
+  const { selectPodcast } = useContext(PodcastContext);
 
   const onPodcastClickHandler = () => {
-    history.push(`/podcast/${podcast.id}`, { podcastEntry: podcast });
+    selectPodcast(podcast.id);
+    history.push(`/podcast/${podcast.id}`);
   };
 
   return (

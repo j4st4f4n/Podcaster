@@ -1,4 +1,4 @@
-import { PodcastEntryI } from '../../screens/podcasts/Podcasts.types';
+import { PodcastEntryI } from '../../context/podcast.context.types';
 
 export type PodcastsListProps = {
   podcasts: PodcastEntryI[];

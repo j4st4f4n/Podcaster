@@ -1,7 +1,12 @@
+// import {
+//   PodcastEntryI,
+//   PodcastsEntryReq,
+// } from '../screens/podcasts/Podcasts.types';
+
 import {
   PodcastEntryI,
   PodcastsEntryReq,
-} from '../screens/podcasts/Podcasts.types';
+} from '../context/podcast.context.types';
 
 export const oneDayTimeInMiliseconds = 24 * 60 * 60 * 1000;
 

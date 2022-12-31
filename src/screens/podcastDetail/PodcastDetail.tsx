@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from 'react';
-import { useParams, useLocation, useHistory } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { parse as rssParse } from 'rss-to-json';
 
 import PodcastSummary from '../../components/podcastSummary/PodcastSummary';
@@ -16,24 +16,31 @@ import {
 import {
   PodcastDetail,
   PodcastDetailReq,
-  PodcastDetailLocationState,
   PodcastItemData,
 } from './PodcastDetail.types';
 import styles from './PodcastDetail.module.scss';
 import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
+import { PodcastContext } from '../../context/podcast-context';
+import { PodcastEntryI } from '../../context/podcast.context.types';
 
 // TODO: Responsive
 
 const Podcast = () => {
   const history = useHistory();
   const { podcastId } = useParams<{ podcastId: string }>();
-  const { state: locationState } = useLocation<PodcastDetailLocationState>();
+  const { selectedPodcast, selectPodcast, setLoading } =
+    useContext(PodcastContext);
   const [podcast, setPodcast] = useState<PodcastDetail | null>(null);
 
-  // TODO: Save podcastDetail to client
+  useEffect(() => {
+    if (!selectedPodcast && podcastId) {
+      // TODO: podcastId #
+      selectPodcast(podcastId);
+    }
+  }, [podcastId, selectedPodcast, selectPodcast]);
 
   useEffect(() => {
-    const loadPodcastDetail = async () => {
+    const loadPodcastDetail = async (selectedPodcast: PodcastEntryI) => {
       try {
         const { data } = await axios.get(
           `${process.env.REACT_APP_CORS_ANYWHERE_URL}/https://itunes.apple.com/lookup?id=${podcastId}`
@@ -51,7 +58,7 @@ const Podcast = () => {
 
           // TODO: For some reason feedUrl>items don't have an id
           const newPodcastDetail: PodcastDetail = {
-            ...locationState.podcastEntry,
+            ...selectedPodcast,
             title: rssData.title,
             description: rssData.description,
             items: rssData.items.map((item: PodcastEpisode) => ({
@@ -80,36 +87,43 @@ const Podcast = () => {
           }
 
           setPodcast(newPodcastDetail);
+          setLoading(false);
         }
+        setLoading(false);
         return; //TODO: Handle no results
       } catch (error) {
         httpErrorHandler(error);
+        setLoading(false);
       }
     };
 
-    // Check podcastDetalItem on localStorage and has not expired
-    const preloadedDetailsData = localStorage.getItem('podcastsItemsData');
+    if (selectedPodcast && podcastId) {
+      setLoading(true);
+      // Check podcastDetalItem on localStorage and has not expired
+      const preloadedDetailsData = localStorage.getItem('podcastsItemsData');
 
-    if (preloadedDetailsData) {
-      const preloadedDetails: PodcastItemData[] =
-        JSON.parse(preloadedDetailsData);
+      if (preloadedDetailsData) {
+        const preloadedDetails: PodcastItemData[] =
+          JSON.parse(preloadedDetailsData);
 
-      const preloadedDetailsItem = preloadedDetails.find(
-        detail => detail.id === podcastId
-      );
+        const preloadedDetailsItem = preloadedDetails.find(
+          detail => detail.id === podcastId
+        );
 
-      if (preloadedDetailsItem) {
-        const hasExpired =
-          new Date().getTime() > preloadedDetailsItem?.expiration;
-        if (!hasExpired) {
-          setPodcast(preloadedDetailsItem);
-          return;
+        if (preloadedDetailsItem) {
+          const hasExpired =
+            new Date().getTime() > preloadedDetailsItem?.expiration;
+          if (!hasExpired) {
+            setPodcast(preloadedDetailsItem);
+            setLoading(false);
+            return;
+          }
         }
       }
-    }
 
-    loadPodcastDetail();
-  }, [podcastId, locationState]);
+      loadPodcastDetail(selectedPodcast);
+    }
+  }, [podcastId, selectedPodcast, selectPodcast, setLoading]);
 
   const onPodcastEpisodeClickHandler = (episode: PodcastEpisode) => {
     history.push(`/podcast/${podcastId}/episode/${episode.id}`, {
@@ -118,7 +132,7 @@ const Podcast = () => {
     });
   };
 
-  if (!podcast) return <div>Loading...</div>;
+  if (!podcast) return <div></div>;
   // TODO: Hide not published items
 
   return (

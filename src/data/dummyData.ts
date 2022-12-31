@@ -1,6 +1,6 @@
 import { PodcastEpisode } from '../components/episodesList/EpisodesList.types';
 import { PodcastSummaryProps } from '../components/podcastSummary/PodcastSummary.types';
-import { PodcastEntryI } from '../screens/podcasts/Podcasts.types';
+import { PodcastEntryI } from '../context/podcast.context.types';
 
 export const DUMMY_SUMMARY: PodcastSummaryProps = {
   id: '788236947',

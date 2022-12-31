@@ -1,5 +1,5 @@
 import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
-import { PodcastEntryI } from '../podcasts/Podcasts.types';
+import { PodcastEntryI } from '../../context/podcast.context.types';
 
 export type PodcastDetailReq = {
   resultCount: number;

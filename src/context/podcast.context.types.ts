@@ -1,3 +1,15 @@
+export type PodcastContextProps = {
+  children?: React.ReactNode;
+};
+
+export interface PodcastContextI {
+  podcastsList: PodcastEntryI[];
+  selectedPodcast: PodcastEntryI | undefined;
+  loading: boolean;
+  selectPodcast: (podcastId: string) => void;
+  setLoading: (value: boolean) => void;
+}
+
 export type PodcastsData = {
   podcasts: PodcastEntryI[];
   expiration: number;
@@ -18,3 +30,8 @@ export interface PodcastEntryI {
   artist: string;
   image: { height: string; label: string }[];
 }
+
+export type PodcastDetailReq = {
+  resultCount: number;
+  results: { feedUrl: string }[];
+};
