@@ -12,6 +12,19 @@ code {
     monospace;
 }
 
+a {
+  color: #2878aa;
+  text-decoration: none;
+}
+
+hr {
+  margin: 0.5rem 0;
+  color: #a0a0a0;
+  border: 0;
+  border-top: 1px solid;
+  opacity: 0.25;
+}
+
 h1,
 h2,
 h3,

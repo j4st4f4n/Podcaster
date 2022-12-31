@@ -22,6 +22,8 @@ import {
 import styles from './PodcastDetail.module.scss';
 import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
 
+// TODO: Responsive
+
 const Podcast = () => {
   const history = useHistory();
   const { podcastId } = useParams<{ podcastId: string }>();

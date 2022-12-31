@@ -1,4 +1,4 @@
-import parse from 'html-react-parser';
+import HTMLReactParser from 'html-react-parser';
 
 import { PodcastSummaryProps } from './PodcastSummary.types';
 import styles from './PodcastSummary.module.scss';
@@ -24,7 +24,7 @@ const PodcastSummary = ({
       <hr />
       <div className={styles.description}>
         <h5 className={styles.title}>Description:</h5>
-        <i className={styles.text}>{parse(description)}</i>
+        <i className={styles.text}>{HTMLReactParser(description)}</i>
       </div>
     </Card>
   );

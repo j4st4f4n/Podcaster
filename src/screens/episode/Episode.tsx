@@ -1,6 +1,13 @@
 import { useLocation /*, useParams*/ } from 'react-router-dom';
 
+import PodcastSummary from '../../components/podcastSummary/PodcastSummary';
+
 import { EpisodeLocationState } from './Episode.types';
+import styles from './Episode.module.scss';
+import Card from '../../components/card/Card';
+import HTMLReactParser from 'html-react-parser';
+
+// TODO: Resposive
 
 const Episode = () => {
   // const {podcastId, episodeId} = useParams<{
@@ -17,14 +24,19 @@ const Episode = () => {
   const enclosureMedia = podcastEpisode.enclosures[0];
 
   return (
-    <div>
-      <img src={podcastDetail.image[2].label} alt={podcastDetail.name} />
-      <div>{podcastDetail.title}</div>
-      <div>by {podcastDetail.artist}</div>
-      <div>Description: {podcastDetail.description}</div>
-      <figure>
-        <audio controls src={media ? media.url : enclosureMedia.url}></audio>
-      </figure>
+    <div className={styles.episode}>
+      <PodcastSummary
+        {...podcastDetail}
+        imgSource={podcastDetail.image[2].label}
+      />
+      <Card classes={styles.episodeDetailContainer}>
+        <h2 className={styles.title}>{podcastDetail.title}</h2>
+        <i>{HTMLReactParser(podcastEpisode.description)}</i>
+        <hr />
+        <figure>
+          <audio controls src={media ? media.url : enclosureMedia.url}></audio>
+        </figure>
+      </Card>
     </div>
   );
 };
