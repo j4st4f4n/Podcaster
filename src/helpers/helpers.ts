@@ -3,6 +3,15 @@ import {
   PodcastsEntryReq,
 } from '../screens/podcasts/Podcasts.types';
 
+export const getFormattedDate = (date: number) =>
+  new Date(date).toLocaleDateString('es-ES');
+
+export const getFormattedDuration = (time: number) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = time - minutes * 60;
+  return `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
+};
+
 export const httpErrorHandler = (error: any) => {
   if (error === null) {
     console.log('Unrecoverable error!! Error is null!');

@@ -1,3 +1,4 @@
+import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
 import { PodcastEntryI } from '../podcasts/Podcasts.types';
 
 export type PodcastDetailReq = {
@@ -11,19 +12,8 @@ export type PodcastDetailLocationState = {
 
 export interface PodcastDetail extends PodcastEntryI {
   description: string;
-  items: PodcastDetailItem[];
+  items: PodcastEpisode[];
 }
-
-export type PodcastDetailItem = {
-  id: string;
-  title: string;
-  description: string;
-  created: number;
-  published: number;
-  itunes_duration: number;
-  link: string | undefined;
-  media: { thumbnail: Thumbnail[] | undefined };
-};
 
 export type Thumbnail = {
   medium: string;

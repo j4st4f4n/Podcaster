@@ -1,0 +1,28 @@
+$table-header: #1976d2;
+$table-header-border: #1565c0;
+$table-border: #d9d9d9;
+.tableContainer {
+  padding: 1.5rem;
+  .row {
+    display: grid;
+    grid-template-columns: 8fr 2fr 2fr;
+    border-bottom: 1px solid #cfcfcf;
+    &.header {
+      font-weight: bold;
+    }
+    &:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+    .col {
+      padding: 0.5rem;
+      &:last-child {
+        text-align: right;
+        margin-right: 1rem;
+      }
+      &.link {
+        color: #2878aa;
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -67,8 +67,6 @@ const Podcasts = () => {
     setFilteredPodcasts(filteredPodcasts);
   };
 
-  debugger;
-
   return (
     <div>
       <h1>PODCASTS</h1>

@@ -1,9 +1,7 @@
-import {
-  PodcastDetail,
-  PodcastDetailItem,
-} from '../podcastDetail/PodcastDetail.types';
+import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
+import { PodcastDetail } from '../podcastDetail/PodcastDetail.types';
 
 export type EpisodeLocationState = {
   podcastDetail: PodcastDetail;
-  podcastEpisode: PodcastDetailItem;
+  podcastEpisode: PodcastEpisode;
 };

@@ -1,6 +1,10 @@
+import parse from 'html-react-parser';
+
 import { PodcastSummaryProps } from './PodcastSummary.types';
 import styles from './PodcastSummary.module.scss';
 import Card from '../card/Card';
+
+// TODO: Description format
 
 const PodcastSummary = ({
   imgSource,
@@ -20,7 +24,7 @@ const PodcastSummary = ({
       <hr />
       <div className={styles.description}>
         <h5 className={styles.title}>Description:</h5>
-        <i className={styles.text}>{description}</i>
+        <i className={styles.text}>{parse(description)}</i>
       </div>
     </Card>
   );

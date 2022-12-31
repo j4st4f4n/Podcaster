@@ -5,21 +5,25 @@ import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { parse as rssParse } from 'rss-to-json';
 
 import PodcastSummary from '../../components/podcastSummary/PodcastSummary';
+import Card from '../../components/card/Card';
+import EpisodesCounter from '../../components/episodesCounter/EpisodesCounter';
+import EpisodesList from '../../components/episodesList/EpisodesList';
 import { httpErrorHandler } from '../../helpers/helpers';
 import {
   PodcastDetail,
   PodcastDetailReq,
   PodcastDetailLocationState,
-  PodcastDetailItem,
 } from './PodcastDetail.types';
 import styles from './PodcastDetail.module.scss';
-import Card from '../../components/card/Card';
+import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
 
 const Podcast = () => {
   const history = useHistory();
   const { podcastId } = useParams<{ podcastId: string }>();
   const { state: locationState } = useLocation<PodcastDetailLocationState>();
   const [podcast, setPodcast] = useState<PodcastDetail | null>(null);
+
+  // TODO: Save podcastDetail to client
 
   useEffect(() => {
     const loadPodcastDetail = async () => {
@@ -43,7 +47,7 @@ const Podcast = () => {
             ...locationState.podcastEntry,
             title: rssData.title,
             description: rssData.description,
-            items: rssData.items.map((item: PodcastDetailItem) => ({
+            items: rssData.items.map((item: PodcastEpisode) => ({
               ...item,
               id: uuidv4(),
             })),
@@ -59,41 +63,28 @@ const Podcast = () => {
     loadPodcastDetail();
   }, [podcastId, locationState]);
 
-  const onPodcastDetailClickHandler = (
-    podcastDetailItem: PodcastDetailItem
-  ) => {
-    history.push(`/podcast/${podcastId}/episode/${podcastDetailItem.id}`, {
+  const onPodcastEpisodeClickHandler = (episode: PodcastEpisode) => {
+    history.push(`/podcast/${podcastId}/episode/${episode.id}`, {
       podcastDetail: podcast,
-      podcastEpisode: podcastDetailItem,
+      podcastEpisode: episode,
     });
   };
 
-  if (!podcast) return <div>No podcast found</div>;
+  if (!podcast) return <div>Loading...</div>;
+  // TODO: Hide not published items
 
   return (
     <div className={styles.podcastDetail}>
       <PodcastSummary {...podcast} imgSource={podcast.image[2].label} />
       <section className={styles.podcastDetailContainer}>
-        <Card>EPISODES</Card>
+        <Card>
+          <EpisodesCounter counter={podcast.items.length} />
+        </Card>
         <Card classes={styles.podcastDetailContainer}>
-          <img src={podcast.image[2].label} alt={podcast.name} />
-          <div>{podcast.title}</div>
-          <div>by {podcast.artist}</div>
-          <div>Description: {podcast.description}</div>
-          <div>Episodes: {podcast.items.length}</div>
-          {podcast.items.map((item: PodcastDetailItem) => {
-            // TODO: Hide not published items
-
-            return (
-              <div key={item.id}>
-                <div onClick={() => onPodcastDetailClickHandler(item)}>
-                  {item.title}
-                </div>
-                <div>{item.published}</div>
-                <div>{item.itunes_duration}</div>
-              </div>
-            );
-          })}
+          <EpisodesList
+            episodes={podcast.items}
+            onClick={onPodcastEpisodeClickHandler}
+          />
         </Card>
       </section>
     </div>
