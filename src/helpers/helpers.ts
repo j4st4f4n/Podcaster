@@ -3,6 +3,8 @@ import {
   PodcastsEntryReq,
 } from '../screens/podcasts/Podcasts.types';
 
+export const oneDayTimeInMiliseconds = 24 * 60 * 60 * 1000;
+
 export const getFormattedDate = (date: number) =>
   new Date(date).toLocaleDateString('es-ES');
 

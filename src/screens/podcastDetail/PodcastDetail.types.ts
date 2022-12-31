@@ -15,8 +15,6 @@ export interface PodcastDetail extends PodcastEntryI {
   items: PodcastEpisode[];
 }
 
-export type Thumbnail = {
-  medium: string;
-  type: string;
-  url: string;
-};
+export interface PodcastItemData extends PodcastDetail {
+  expiration: number;
+}

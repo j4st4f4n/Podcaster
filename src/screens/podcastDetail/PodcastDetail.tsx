@@ -8,11 +8,16 @@ import PodcastSummary from '../../components/podcastSummary/PodcastSummary';
 import Card from '../../components/card/Card';
 import EpisodesCounter from '../../components/episodesCounter/EpisodesCounter';
 import EpisodesList from '../../components/episodesList/EpisodesList';
-import { httpErrorHandler } from '../../helpers/helpers';
+import {
+  getExpireTime,
+  httpErrorHandler,
+  oneDayTimeInMiliseconds,
+} from '../../helpers/helpers';
 import {
   PodcastDetail,
   PodcastDetailReq,
   PodcastDetailLocationState,
+  PodcastItemData,
 } from './PodcastDetail.types';
 import styles from './PodcastDetail.module.scss';
 import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
@@ -52,6 +57,26 @@ const Podcast = () => {
               id: uuidv4(),
             })),
           };
+
+          const newPodcastItemData: PodcastItemData = {
+            ...newPodcastDetail,
+            expiration: getExpireTime(oneDayTimeInMiliseconds),
+          };
+          const storedItemsData = localStorage.getItem('podcastsItemsData');
+
+          if (!storedItemsData) {
+            localStorage.setItem(
+              'podcastsItemsData',
+              JSON.stringify([newPodcastItemData])
+            );
+          } else {
+            const storedItems = JSON.parse(storedItemsData);
+            localStorage.setItem(
+              'podcastsItemsData',
+              JSON.stringify([...storedItems, newPodcastItemData])
+            );
+          }
+
           setPodcast(newPodcastDetail);
         }
         return; //TODO: Handle no results
@@ -59,6 +84,27 @@ const Podcast = () => {
         httpErrorHandler(error);
       }
     };
+
+    // Check podcastDetalItem on localStorage and has not expired
+    const preloadedDetailsData = localStorage.getItem('podcastsItemsData');
+
+    if (preloadedDetailsData) {
+      const preloadedDetails: PodcastItemData[] =
+        JSON.parse(preloadedDetailsData);
+
+      const preloadedDetailsItem = preloadedDetails.find(
+        detail => detail.id === podcastId
+      );
+
+      if (preloadedDetailsItem) {
+        const hasExpired =
+          new Date().getTime() > preloadedDetailsItem?.expiration;
+        if (!hasExpired) {
+          setPodcast(preloadedDetailsItem);
+          return;
+        }
+      }
+    }
 
     loadPodcastDetail();
   }, [podcastId, locationState]);

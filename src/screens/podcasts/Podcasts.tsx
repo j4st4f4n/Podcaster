@@ -5,6 +5,7 @@ import { PodcastsData, PodcastEntryI } from './Podcasts.types';
 import {
   getExpireTime,
   httpErrorHandler,
+  oneDayTimeInMiliseconds,
   simplifyRequestPodcastsEntry,
 } from '../../helpers/helpers';
 import SearchBox from '../../components/searchBox/SearchBox';
@@ -21,8 +22,6 @@ const Podcasts = () => {
         const { data } = await axios.get(`
           ${process.env.REACT_APP_URL}/us/rss/toppodcasts/limit=100/genre=1310/json`);
 
-        localStorage.setItem('podcastsDataRaw', JSON.stringify(data));
-        const oneDayTimeInMiliseconds = 24 * 60 * 60 * 1000;
         const entries = simplifyRequestPodcastsEntry(data.feed.entry);
         const podcastsToSaveData: PodcastsData = {
           podcasts: entries,
