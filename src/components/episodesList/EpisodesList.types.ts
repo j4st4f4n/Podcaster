@@ -5,7 +5,7 @@ export type PodcastEpisode = {
   created: number;
   published: number;
   link: string | undefined;
-  media: { thumbnail: Thumbnail[] | undefined };
+  media: { thumbnail: Thumbnail | Thumbnail[] | undefined };
   enclosures: [EnclosureA, EnclosureB];
   content_encoded: string;
   itunes_author: string;

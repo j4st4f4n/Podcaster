@@ -68,7 +68,6 @@ const Podcasts = () => {
 
   return (
     <div>
-      <h1>PODCASTS</h1>
       <SearchBox
         resultsNumber={filteredPodcasts.length}
         value={search}

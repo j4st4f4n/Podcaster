@@ -17,11 +17,7 @@ const Episode = () => {
   const { state: locationState } = useLocation<EpisodeLocationState>();
 
   const { podcastDetail, podcastEpisode } = locationState;
-
-  const media = podcastEpisode.media.thumbnail?.find(mediaAudio =>
-    mediaAudio.type.includes('audio')
-  );
-  const enclosureMedia = podcastEpisode.enclosures[0];
+  const media = podcastEpisode.enclosures[0];
 
   return (
     <div className={styles.episode}>
@@ -34,7 +30,7 @@ const Episode = () => {
         <i>{HTMLReactParser(podcastEpisode.description)}</i>
         <hr />
         <figure>
-          <audio controls src={media ? media.url : enclosureMedia.url}></audio>
+          <audio controls src={media.url}></audio>
         </figure>
       </Card>
     </div>
