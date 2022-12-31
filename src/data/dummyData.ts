@@ -3,6 +3,7 @@ import { PodcastSummaryProps } from '../components/podcastSummary/PodcastSummary
 import { PodcastEntryI } from '../screens/podcasts/Podcasts.types';
 
 export const DUMMY_SUMMARY: PodcastSummaryProps = {
+  id: '788236947',
   imgSource:
     'https://is1-ssl.mzstatic.com/image/thumb/Podcasts122/v4/84/84/ab/8484ab60-8c9e-30d5-92d3-c806c89cbbe7/mza_14154291241936766492.jpg/170x170bb.png',
   name: 'Caresha Please',
