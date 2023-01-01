@@ -24,6 +24,7 @@ const PodcastEntry = ({ podcast }: PodcastEntryProps) => {
         <div
           className={styles.podcastCardData}
           onClick={() => onPodcastClickHandler()}
+          title={podcast.title}
         >
           <div className={styles.title}>{podcast.title}</div>
           <div className={styles.author}>Author: {podcast.artist}</div>

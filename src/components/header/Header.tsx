@@ -12,7 +12,7 @@ const Header = () => {
         <Link to="/" className={styles.title}>
           Podcaster
         </Link>
-        {loading && <div className={styles.loading}></div>}
+        {loading && <div className={styles.loading} title="loading"></div>}
       </div>
       <hr />
     </div>

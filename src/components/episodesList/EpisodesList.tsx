@@ -14,7 +14,7 @@ const EpisodesList = ({
 }) => {
   return (
     <div className={styles.tableContainer} role="table" aria-label="episodes">
-      <div className={`${styles.row} ${styles.header}`} role="rowgroup">
+      <div className={`${styles.row} ${styles.header}`} role="rowheader">
         <div className={styles.col} role="columnheader">
           Title
         </div>
