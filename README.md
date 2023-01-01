@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Podcaster
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Permitions
+
+This app requires https://cors-anywhere.herokuapp.com/ permitions before use.
+
+## Install
+
+### `npm install`
+
+This will install any necessary packages.
+
+###
 
 ## Available Scripts
 
@@ -18,6 +28,10 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm run coverage`
+
+Testing coverage threshold
 
 ### `npm run build`
 
