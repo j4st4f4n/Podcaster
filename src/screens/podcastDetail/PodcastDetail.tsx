@@ -22,22 +22,35 @@ import styles from './PodcastDetail.module.scss';
 import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
 import { PodcastContext } from '../../context/podcast-context';
 import { PodcastEntryI } from '../../context/podcast.context.types';
+import Episode from '../../components/episode/Episode';
 
 // TODO: Responsive
 
 const Podcast = () => {
   const history = useHistory();
-  const { podcastId } = useParams<{ podcastId: string }>();
+  const { podcastId, episodeId } = useParams<{
+    podcastId: string;
+    episodeId: string;
+  }>();
   const { selectedPodcast, selectPodcast, setLoading } =
     useContext(PodcastContext);
   const [podcast, setPodcast] = useState<PodcastDetail | null>(null);
+  const [episode, setEpisode] = useState<PodcastEpisode>();
 
   useEffect(() => {
-    if (!selectedPodcast && podcastId) {
-      // TODO: podcastId #
-      selectPodcast(podcastId);
+    if (!episodeId) setEpisode(undefined); // Clean up
+    if (!selectedPodcast && podcastId) selectPodcast(podcastId);
+
+    if (podcast && episodeId) {
+      // This will only worck when PodcastDetail is save in the user browser data since episodeId is not supplied.
+      const selectedEpisode = podcast.items.find(
+        episode => episode.id === episodeId
+      );
+      if (selectedEpisode) {
+        setEpisode(selectedEpisode);
+      }
     }
-  }, [podcastId, selectedPodcast, selectPodcast]);
+  }, [podcastId, episodeId, selectedPodcast, podcast, selectPodcast]);
 
   useEffect(() => {
     const loadPodcastDetail = async (selectedPodcast: PodcastEntryI) => {
@@ -142,12 +155,16 @@ const Podcast = () => {
         <Card>
           <EpisodesCounter counter={podcast.items.length} />
         </Card>
-        <Card classes={styles.podcastDetailContainer}>
-          <EpisodesList
-            episodes={podcast.items}
-            onClick={onPodcastEpisodeClickHandler}
-          />
-        </Card>
+        {episode ? (
+          <Episode episode={episode} />
+        ) : (
+          <Card classes={styles.podcastDetailContainer}>
+            <EpisodesList
+              episodes={podcast.items}
+              onClick={onPodcastEpisodeClickHandler}
+            />
+          </Card>
+        )}
       </section>
     </div>
   );

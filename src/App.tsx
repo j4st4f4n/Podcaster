@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Podcasts from './screens/podcasts/Podcasts';
 import PodcastDetail from './screens/podcastDetail/PodcastDetail';
-import Episode from './screens/episode/Episode';
+// import Episode from './screens/episode/Episode';
 import PodcastContextProvaider from './context/podcast-context';
 
 const App = () => {
@@ -20,7 +20,8 @@ const App = () => {
               <PodcastDetail />
             </Route>
             <Route path="/podcast/:podcastId/episode/:episodeId" exact>
-              <Episode />
+              {/* <Episode /> */}
+              <PodcastDetail />
             </Route>
             <Route path="/">
               <Redirect to="/" />
