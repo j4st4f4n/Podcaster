@@ -20,10 +20,15 @@
     .title {
       font-weight: bold;
       text-transform: uppercase;
+      cursor: pointer;
+      &:hover {
+        color: #2878aa;
+      }
     }
     .author {
       margin-top: 1rem;
       color: grey;
+      cursor: pointer;
     }
   }
 }

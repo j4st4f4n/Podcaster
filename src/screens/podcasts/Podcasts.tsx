@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import SearchBox from '../../components/searchBox/SearchBox';
 import PodcastList from '../../components/podcastsList/PodcastsList';
 import { PodcastContext } from '../../context/podcast-context';
-import { PodcastEntryI } from '../../context/podcast.context.types';
+import { PodcastEntryI } from '../../context/podcast-context.types';
 
 const Podcasts = () => {
   const { podcastsList } = useContext(PodcastContext);

@@ -2,6 +2,17 @@ export type PodcastContextProps = {
   children?: React.ReactNode;
 };
 
+export type PodcastContextState = {
+  podcastsList: PodcastEntryI[];
+  selectedPodcast: PodcastEntryI | undefined;
+  loading: boolean;
+};
+
+export type PodcastContextAction = {
+  type: string;
+  payload: undefined | boolean | string | PodcastEntryI | PodcastEntryI[];
+};
+
 export interface PodcastContextI {
   podcastsList: PodcastEntryI[];
   selectedPodcast: PodcastEntryI | undefined;

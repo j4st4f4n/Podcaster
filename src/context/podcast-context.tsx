@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 
 import {
@@ -10,9 +10,15 @@ import {
 import {
   PodcastContextI,
   PodcastContextProps,
-  PodcastEntryI,
   PodcastsData,
-} from './podcast.context.types';
+} from './podcast-context.types';
+import {
+  SET_PODCAST_LIST,
+  SET_PODCAST_LOADING,
+  SET_PODCAST_SELECTED,
+  podcastReducer,
+  podcastReducerInitialState,
+} from './podcast-reducer';
 
 export const PodcastContext = createContext<PodcastContextI>({
   podcastsList: [],
@@ -23,11 +29,10 @@ export const PodcastContext = createContext<PodcastContextI>({
 });
 
 const PodcastContextProvaider = (props: PodcastContextProps) => {
-  const [podcasts, setPodcasts] = useState<PodcastEntryI[]>([]);
-  const [selectedPodcast, setSelectedPodcast] = useState<
-    PodcastEntryI | undefined
-  >();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [state, dispatch] = useReducer(
+    podcastReducer,
+    podcastReducerInitialState
+  );
 
   useEffect(() => {
     const loadPodcasts = async () => {
@@ -44,15 +49,14 @@ const PodcastContextProvaider = (props: PodcastContextProps) => {
           'podcastsData',
           JSON.stringify(podcastsToSaveData)
         );
-        setPodcasts(entries);
-        setLoading(false);
+        dispatch({ type: SET_PODCAST_LIST, payload: entries });
       } catch (error) {
         httpErrorHandler(error);
-        setLoading(false);
+        dispatch({ type: SET_PODCAST_LOADING, payload: false });
       }
     };
 
-    setLoading(true);
+    dispatch({ type: SET_PODCAST_LOADING, payload: true });
     const preloadedPodcastsString = localStorage.getItem('podcastsData');
     if (preloadedPodcastsString) {
       const preloadedPodcasts: PodcastsData = JSON.parse(
@@ -60,8 +64,10 @@ const PodcastContextProvaider = (props: PodcastContextProps) => {
       );
       const hasExpired = new Date().getTime() > preloadedPodcasts.expiration;
       if (!hasExpired) {
-        setPodcasts(preloadedPodcasts.podcasts);
-        setLoading(false);
+        dispatch({
+          type: SET_PODCAST_LIST,
+          payload: preloadedPodcasts.podcasts,
+        });
         return;
       }
     }
@@ -69,17 +75,20 @@ const PodcastContextProvaider = (props: PodcastContextProps) => {
   }, []);
 
   const selectPodcastHandler = (podcastId: string) =>
-    setSelectedPodcast(podcasts.find(podcast => podcast.id === podcastId));
+    dispatch({ type: SET_PODCAST_SELECTED, payload: podcastId });
 
-  const setLoadingHandler = (value: boolean) => setLoading(value);
+  const setLoadingHandler = (value: boolean) =>
+    dispatch({ type: SET_PODCAST_LOADING, payload: value });
 
   const contextValue: PodcastContextI = {
-    podcastsList: podcasts,
-    selectedPodcast,
-    loading,
+    podcastsList: state.podcastsList,
+    selectedPodcast: state.selectedPodcast,
+    loading: state.loading,
     selectPodcast: selectPodcastHandler,
     setLoading: setLoadingHandler,
   };
+
+  console.log(contextValue);
 
   return (
     <PodcastContext.Provider value={contextValue}>

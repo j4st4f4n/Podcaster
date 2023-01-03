@@ -21,7 +21,7 @@ import {
 import styles from './PodcastDetail.module.scss';
 import { PodcastEpisode } from '../../components/episodesList/EpisodesList.types';
 import { PodcastContext } from '../../context/podcast-context';
-import { PodcastEntryI } from '../../context/podcast.context.types';
+import { PodcastEntryI } from '../../context/podcast-context.types';
 import Episode from '../../components/episode/Episode';
 
 // TODO: Responsive
@@ -32,7 +32,7 @@ const Podcast = () => {
     podcastId: string;
     episodeId: string;
   }>();
-  const { selectedPodcast, selectPodcast, setLoading } =
+  const { selectedPodcast, loading, selectPodcast, setLoading } =
     useContext(PodcastContext);
   const [podcast, setPodcast] = useState<PodcastDetail | null>(null);
   const [episode, setEpisode] = useState<PodcastEpisode>();
@@ -110,7 +110,7 @@ const Podcast = () => {
       }
     };
 
-    if (selectedPodcast && podcastId) {
+    if (selectedPodcast && podcastId && !loading) {
       setLoading(true);
       // Check podcastDetalItem on localStorage and has not expired
       const preloadedDetailsData = localStorage.getItem('podcastsItemsData');
@@ -136,7 +136,7 @@ const Podcast = () => {
 
       loadPodcastDetail(selectedPodcast);
     }
-  }, [podcastId, selectedPodcast, selectPodcast, setLoading]);
+  }, [podcastId, selectedPodcast, loading, selectPodcast, setLoading]);
 
   const onPodcastEpisodeClickHandler = (episode: PodcastEpisode) => {
     history.push(`/podcast/${podcastId}/episode/${episode.id}`, {

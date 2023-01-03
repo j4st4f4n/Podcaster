@@ -1,6 +1,6 @@
 import { PodcastEpisode } from '../components/episodesList/EpisodesList.types';
 import { PodcastSummaryProps } from '../components/podcastSummary/PodcastSummary.types';
-import { PodcastEntryI } from '../context/podcast.context.types';
+import { PodcastEntryI } from '../context/podcast-context.types';
 
 export const DUMMY_SUMMARY: PodcastSummaryProps = {
   id: '788236947',
@@ -47,7 +47,7 @@ export const DUMMY_EPISODES: PodcastEpisode[] = [
     content_encoded:
       '<p>This week on Angie Martinez IRL Podcast, her girl Taraji P. Henson joins her for a candid conversation that only two close friends could have.</p>\n<p>Taraji didn’t sign up for fame, she signed up to create art as she believes art has the power to change and affect lives. But what happens when she looks in the mirror and doesn’t feel like she can provide that lift anymore? When things she thought made her happy don\'t cut it anymore? She has to go on her own journey to find happiness.</p>\n<p>But Taraji isn\'t alone, Angie reveals her own moments of darkness and the awakening she experienced on a trip with Taraji. The two explain what it means to fight for your joy and digest the importance of friends who can save your life.</p>\n<p>Their convo also explores managing social media addictions in a healthy way, unshakable faith, and a debate over the importance and need of ego.</p>\n<p>In the words of Taraji, If you have a story to tell, tell it.</p><p>See <a href="https://omnystudio.com/listener">omnystudio.com/listener</a> for privacy information.</p>',
     itunes_author: 'iHeartPodcasts',
-    itunes_duration: 2920,
+    itunes_duration: '14:05',
     itunes_season: 1,
     itunes_episode: 12,
     itunes_episodeType: 'full',
